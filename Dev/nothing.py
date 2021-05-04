@@ -1,0 +1,21 @@
+from SHUtils.parameter import get_auto_id, get_random_alphabets
+
+autoId = get_auto_id()
+print(autoId)
+autoId = get_auto_id(suffix_digits=9)
+print(autoId)
+autoId = get_auto_id(suffix_digits=1)
+print(autoId)
+autoId = get_auto_id(suffix_digits=0)
+print(autoId)
+
+letters = get_random_alphabets()
+print('letters:', letters)
+letters = get_random_alphabets(suffix_digits=9)
+print('letters:', letters)
+letters = get_random_alphabets(suffix_digits=1)
+print('letters:', letters)
+letters = get_random_alphabets(suffix_digits=0)
+print('letters:', letters)
+letters = get_random_alphabets(suffix_digits=-1)
+print('letters:', letters)
