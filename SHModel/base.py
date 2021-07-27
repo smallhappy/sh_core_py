@@ -48,7 +48,7 @@ class Base:
         members = vars(self).items()
         members = list(members)
         keys = map(lambda member: f"`{member[0]}`", members)
-        values = map(lambda member: f"'{member[1]}'", members)
+        values = map(lambda member: "'" + str(member[1]).replace("'", "''") + "'", members)  # 跳脫字元
         sql = f'INSERT INTO `{table}` ('
         sql += ', '.join(keys)
         sql += ') VALUES ('

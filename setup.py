@@ -8,6 +8,8 @@
 # 終止虛擬環境(在虛擬環境模式下)
 # deactivate
 
+# 查看專案環境套件
+# pip list --format=columns (或 pip freeze ，但有點不知道在幹嘛)
 # 導出專案環境套件
 # pip freeze > requirements.txt
 # 安裝 requirements.txt 記錄的套件
@@ -31,7 +33,7 @@ def packaging():
     packages = find_packages()
     setup(
         name='SHCorePy',  # pip list --format=columns 或 pip uninstall 時的名稱
-        version='0.0.2',
+        version='0.0.5',
         author='jeff',
         author_email='neonn800885@hotmail.com',
         url='https://github.com/smallhappy',
