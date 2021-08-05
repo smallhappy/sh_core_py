@@ -33,7 +33,7 @@ def packaging():
     packages = find_packages()
     setup(
         name='SHCorePy',  # pip list --format=columns 或 pip uninstall 時的名稱
-        version='0.0.5',
+        version='0.0.7',
         author='jeff',
         author_email='neonn800885@hotmail.com',
         url='https://github.com/smallhappy',
@@ -41,7 +41,8 @@ def packaging():
         install_requires=[
             'flask', 'gunicorn',
             'qrcode==6.1', 'image==1.5.33',
-            'mysql-connector-python==8.0.21'
+            'mysql-connector-python==8.0.21',
+            'requests', 'beautifulsoup4'
         ],  # 依賴的套件
     )
     print('find_packages:', packages)
