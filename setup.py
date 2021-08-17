@@ -30,10 +30,11 @@ def packaging():
     # 可用「 python setup.py sdist 」來進行打包，產生 *.tar.gz 。
     # 可用「 pip install *.tar.gz 」來進行本地安裝。
     # 安裝完畢後，可用「import SHUtils」引入專案，並以「SHUtils.base64.encode()」呼叫。
-    packages = find_packages()
+    packages = find_packages(exclude=['dev'])  # 自動查找含有 __init__.py 的資料夾。
+    print('find_packages:', packages)
     setup(
         name='SHCorePy',  # pip list --format=columns 或 pip uninstall 時的名稱
-        version='0.0.7',
+        version='0.1.1',
         author='jeff',
         author_email='neonn800885@hotmail.com',
         url='https://github.com/smallhappy',
@@ -45,7 +46,6 @@ def packaging():
             'requests', 'beautifulsoup4'
         ],  # 依賴的套件
     )
-    print('find_packages:', packages)
     # 釋放記憶體
     del packages
     gc.collect()

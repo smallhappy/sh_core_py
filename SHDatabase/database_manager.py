@@ -32,6 +32,10 @@ class DatabaseManager:
             print(f'👻 database_manager error: {error}')
             self.__db.rollback()
 
+    @property
+    def db(self):
+        return self.__db
+
     def show_databases(self):
         """ 顯示資料庫 """
         sql = 'SHOW DATABASES'
@@ -89,7 +93,7 @@ class DatabaseManager:
             print(f'👻 database_manager error: {error}')
             self.__db.rollback()
 
-    def delete_table(self, sql):
+    def delete_data(self, sql):
         """ 插入數據 """
         if self.show_console:
             print(sql)
