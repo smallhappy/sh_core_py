@@ -1,23 +1,30 @@
 # -*- coding: utf-8 -*-
 
+from typing import Dict
+
 from flask import jsonify
 
 from .base import Base
 
 
 class Response(Base):
-    __error = {
-        'code': '',
-        'message': ''
-    }
+    __error: Dict[str, str]
     """ 錯誤物件 """
-    __content = ''
+    __content: str
     """ 資料內容 """
 
+    def __reset(self):
+        self.__error = {
+            'code': '',
+            'message': ''
+        }
+        self.__content = ''
+
     def __init__(self):
-        pass
+        self.__reset()
 
     def __init__(self, error_code='', error_message='', content=''):
+        self.__reset()
         self.set_data(error_code, error_message, content)
 
     def set_error_code(self, error_code):
@@ -51,5 +58,8 @@ class Response(Base):
         return jsonify(result)
 
 
-default_response = Response().set_error_message('未知的錯誤').set_content('failure')
+default_error = Response(content='failure', error_message='未知的錯誤')
 """ 預設回應，未知錯誤 """
+
+default_success = Response(content='success')
+""" 預設回應，成功！！ """

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import gc
-
 import mysql.connector
 from mysql.connector import Error
 
@@ -16,7 +14,6 @@ class DatabaseManager:
     """ 是否印出資料庫操作 """
 
     def __init__(self, config):
-        # noinspection PyBroadException
         try:
             self.__db = mysql.connector.connect(
                 host=config.host,
@@ -36,56 +33,11 @@ class DatabaseManager:
     def db(self):
         return self.__db
 
-    def show_databases(self):
-        """ 顯示資料庫 """
-        sql = 'SHOW DATABASES'
+    def execute_sql(self, sql):
         if self.show_console:
             print(sql)
         try:
             self.__cursor.execute(sql)
-        except Error as error:
-            print(f'👻 database_manager error: {error}')
-        databases = self.__cursor.fetchall()
-        for database in databases:
-            print(database)
-        # 釋放記憶體
-        del sql, databases
-        gc.collect()
-
-    def show_tables(self):
-        """ 顯示表格 """
-        sql = 'SHOW TABLES'
-        if self.show_console:
-            print(sql)
-        try:
-            self.__cursor.execute(sql)
-        except Error as error:
-            print(f'👻 database_manager error: {error}')
-        tables = self.__cursor.fetchall()
-        for table in tables:
-            print(table)
-        # 釋放記憶體
-        del sql, tables
-        gc.collect()
-
-    def select_data(self, sql):
-        """ 讀取數據 """
-        if self.show_console:
-            print(sql)
-        try:
-            self.__cursor.execute(sql)
-        except Error as error:
-            print(f'👻 database_manager error: {error}')
-        return self.__cursor.fetchall()
-
-    def insert_data(self, sql):
-        """ 插入數據 """
-        if self.show_console:
-            print(sql)
-        # noinspection PyBroadException
-        try:
-            self.__cursor.execute(sql)
-            self.__db.commit()
         except mysql.connector.IntegrityError as error:
             print(f'👻 database_manager error: {error}')
             self.__db.rollback()
@@ -93,14 +45,36 @@ class DatabaseManager:
             print(f'👻 database_manager error: {error}')
             self.__db.rollback()
 
+    def show_databases(self):
+        """ 顯示資料庫 """
+        sql = 'SHOW DATABASES'
+        self.execute_sql(sql)
+        databases = self.__cursor.fetchall()
+        for database in databases:
+            print(database)
+
+    def show_tables(self):
+        """ 顯示表格 """
+        sql = 'SHOW TABLES'
+        self.execute_sql(sql)
+        tables = self.__cursor.fetchall()
+        for table in tables:
+            print(table)
+
+    def create_table(self, sql):
+        self.execute_sql(sql)
+
+    def select_data(self, sql):
+        """ 讀取數據 """
+        self.execute_sql(sql)
+        return self.__cursor.fetchall()
+
+    def insert_data(self, sql):
+        """ 插入數據 """
+        self.execute_sql(sql)
+        self.__db.commit()
+
     def delete_data(self, sql):
         """ 插入數據 """
-        if self.show_console:
-            print(sql)
-        # noinspection PyBroadException
-        try:
-            self.__cursor.execute(sql)
-            self.__db.commit()
-        except Error as error:
-            print(f'👻 database_manager error: {error}')
-            self.__db.rollback()
+        self.execute_sql(sql)
+        self.__db.commit()
