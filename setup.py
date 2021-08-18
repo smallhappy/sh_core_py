@@ -34,7 +34,7 @@ def packaging():
     print('find_packages:', packages)
     setup(
         name='SHCorePy',  # pip list --format=columns 或 pip uninstall 時的名稱
-        version='0.1.6',
+        version='0.1.2',
         author='jeff',
         author_email='neonn800885@hotmail.com',
         url='https://github.com/smallhappy',

@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 
 import mysql.connector
+from SHModel.Configuration.database_config import DatabaseConfig
 from mysql.connector import Error
 
 
 class DatabaseManager:
     """ 資料庫 """
 
-    sleep_time = 0.055
+    sleep_time: float = 0.055
     """ 避免連續操作，導致錯誤的間隔時間 """
 
-    show_console = False
+    show_console: bool = False
     """ 是否印出資料庫操作 """
 
-    def __init__(self, config):
+    def __init__(self, config: DatabaseConfig):
         try:
             self.__db = mysql.connector.connect(
                 host=config.host,
@@ -29,15 +30,18 @@ class DatabaseManager:
             print(f'👻 database_manager error: {error}')
             self.__db.rollback()
 
-    @property
-    def db(self):
-        return self.__db
+    def __del__(self):
+        if self.__db.is_connected():
+            self.__cursor.close()
+            self.__db.close()
 
-    def execute_sql(self, sql):
+    def execute_sql(self, sql: str, with_commit: bool = False):
         if self.show_console:
             print(sql)
         try:
             self.__cursor.execute(sql)
+            if with_commit:
+                self.__db.commit()
         except mysql.connector.IntegrityError as error:
             print(f'👻 database_manager error: {error}')
             self.__db.rollback()
@@ -61,20 +65,27 @@ class DatabaseManager:
         for table in tables:
             print(table)
 
-    def create_table(self, sql):
+    def create_table(self, sql: str):
         self.execute_sql(sql)
 
-    def select_data(self, sql):
+    def select_data(self, sql: str, fetchone: bool = False):
         """ 讀取數據 """
         self.execute_sql(sql)
-        return self.__cursor.fetchall()
+        return self.__cursor.fetchall() if not fetchone else self.__cursor.fetchone()
 
-    def insert_data(self, sql):
-        """ 插入數據 """
+    def select_amount(self, sql: str) -> int:
         self.execute_sql(sql)
-        self.__db.commit()
+        self.__cursor.fetchall()
+        return self.__cursor.rowcount
 
-    def delete_data(self, sql):
+    def select_exist(self, sql: str) -> bool:
+        is_exist = self.select_data(sql=f"SELECT EXISTS({sql})", fetchone=True)
+        return bool(is_exist[0])
+
+    def modify_data(self, sql: str):
+        """ 插入或更新數據 """
+        self.execute_sql(sql, with_commit=True)
+
+    def delete_data(self, sql: str):
         """ 插入數據 """
-        self.execute_sql(sql)
-        self.__db.commit()
+        self.execute_sql(sql, with_commit=True)
