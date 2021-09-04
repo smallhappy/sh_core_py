@@ -1,5 +1,12 @@
 # -*- coding: UTF-8 -*-
 
+# 伺服器部署指令(下載)
+# wget {url}
+# ex: wget https://dl.dropbox.com/s/qr2ik0cnzrlnbb5/test_requirements.zip
+
+# 伺服器部署指令(解壓縮)
+# upzip test_requirements.zip
+
 # 初始化虛擬環境
 # python -m venv env-name
 # 啟動虛擬環境

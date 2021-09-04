@@ -28,5 +28,5 @@ def set_logger_stream(file_name: str = 'PyProject.log'):
 
 if '__main__' == __name__:
     set_logger_stream('nuancer.log')
-    print('🎃🎃🎃' + '報可開生即通管子麼朋小白下命北，期個道知人有看基經了這的成十經數。')
-    raise ValueError('9527')
+    print('🎃🎃🎃' + 'Lorem ipsum dolor sit amet, consectetur adipiscing elit')
+    raise ValueError('test')
